@@ -29,7 +29,7 @@ instance. Full spec: `HANDOVER-wikijs-search-shim.md`.
 |---|---|
 | `wikijs-search-shim.py` | the service |
 | `test_shim.py` | acceptance tests, stubs GraphQL, no live wiki |
-| `Containerfile` | OCI build — base image + one file, `COPY --chmod=0644` |
+| `Containerfile` | OCI build — base image + one file, plain `COPY` + `RUN chmod 0644` (no BuildKit-only `--chmod`) |
 | `compose.yaml` | podman/docker compose, loopback publish, read-only, cap_drop ALL |
 | `wikijs-search-shim.container` | Podman Quadlet unit for `systemctl --user` |
 | `.env.example` | config template; real `.env` is git/docker-ignored |

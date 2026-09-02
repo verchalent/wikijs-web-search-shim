@@ -167,7 +167,7 @@ under two seconds) is verified manually with the commands above.
 | HTTP 502, "could not reach" | DNS / network path to the wiki |
 | HTTP 502, "not JSON" | a proxy or login wall between shim and wiki returning HTML |
 | HTTP 502, "rejected the query" | bad or expired `WIKI_TOKEN` (message is surfaced from GraphQL) |
-| container exits immediately, "Permission denied" reading the script | rebuild — the Containerfile sets `--chmod=0644` on COPY |
+| container exits immediately, "Permission denied" reading the script | stale image built before the `RUN chmod 0644` fix, or a source tree with owner-only perms — `docker compose build --no-cache` then `up -d` |
 | OpenSearch templates point at `http://` or wrong host | set `PUBLIC_URL` |
 
 ## Out of scope

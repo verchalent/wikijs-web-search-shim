@@ -8,7 +8,11 @@ FROM docker.io/library/python:3.13-slim
 
 RUN useradd --uid 10001 --no-create-home --shell /usr/sbin/nologin shim
 
-COPY --chmod=0644 wikijs-search-shim.py /app/wikijs-search-shim.py
+# Plain COPY + explicit chmod — NOT `COPY --chmod`, which is BuildKit-only and is
+# silently ignored without it, leaving the file at its (often owner-only) source
+# mode so the non-root USER below cannot read it. This form works everywhere.
+COPY wikijs-search-shim.py /app/wikijs-search-shim.py
+RUN chmod 0644 /app/wikijs-search-shim.py
 
 USER 10001
 
