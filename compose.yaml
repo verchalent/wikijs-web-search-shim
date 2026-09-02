@@ -9,7 +9,7 @@ services:
     ports:
       # Loopback only — a reverse proxy on the host fronts TLS and the public name.
       # Bind 0.0.0.0 only when NO proxy is in front of the service.
-      - "127.0.0.1:8099:8099"
+      - "8099:8099"
     restart: unless-stopped
     read_only: true
     tmpfs:
