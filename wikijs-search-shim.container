@@ -1,0 +1,23 @@
+# Podman Quadlet unit. Install to ~/.config/containers/systemd/
+# then: systemctl --user daemon-reload && systemctl --user start wikijs-search-shim
+# Start at boot without a login session: loginctl enable-linger $USER
+[Unit]
+Description=wikijs-search-shim — URL-addressable search for Wiki.js
+After=network-online.target
+Wants=network-online.target
+
+[Container]
+Image=localhost/wikijs-search-shim:latest
+EnvironmentFile=%h/.config/containers/systemd/wikijs-search-shim.env
+PublishPort=127.0.0.1:8099:8099
+ReadOnly=true
+NoNewPrivileges=true
+DropCapability=ALL
+User=10001
+
+[Service]
+Restart=always
+TimeoutStopSec=5
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,39 @@
+services:
+  wikijs-search-shim:
+    build:
+      context: .
+      dockerfile: Containerfile
+    image: localhost/wikijs-search-shim:latest
+    container_name: wikijs-search-shim
+    env_file: .env
+    ports:
+      # Loopback only — a reverse proxy on the host fronts TLS and the public name.
+      # Bind 0.0.0.0 only when NO proxy is in front of the service.
+      - "127.0.0.1:8099:8099"
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test:
+        - CMD
+        - python3
+        - -c
+        - "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8099/healthz',timeout=3).status==200 else 1)"
+      interval: 30s
+      timeout: 5s
+      start_period: 5s
+      retries: 3
+
+# Optional: reach Wiki.js by container name instead of over the LAN.
+# The network name is deployment-specific — set it and uncomment.
+#    networks:
+#      - wiki
+#networks:
+#  wiki:
+#    external: true
+#    name: <wikijs_network_name>
