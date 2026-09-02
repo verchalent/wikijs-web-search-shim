@@ -3,3 +3,6 @@
 !.env.example
 __pycache__/
 *.pyc
+.envrc
+.venv
+__init__.py
